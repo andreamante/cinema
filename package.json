@@ -1,0 +1,25 @@
+{
+  "name": "cinema",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+"scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andreamante/cinema.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/andreamante/cinema/issues"
+  },
+  "homepage": "https://github.com/andreamante/cinema#readme",
+  "devDependencies": {
+    "vite": "^8.3.0"
+  }
+}
