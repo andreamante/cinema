@@ -130,28 +130,39 @@ async function gestisciPrenotazione(e: Event) {
   e.preventDefault();
 
   const screeningId = Number(selectedScreeningInput.value);
-  const nome = inputNome.value;
-  const cognome = inputCognome.value;
-  const email = inputEmail.value;
+  const nome = inputNome.value.trim();
+  const cognome = inputCognome.value.trim();
+  const email = inputEmail.value.trim();
 
   bookingMessage.style.color = "#ffffff";
   bookingMessage.textContent = "Invio prenotazione in corso...";
 
+  const endpointURL = `https://its-cinema.vercel.app/api/screenings/${screeningId}/bookings`;
+
+  const payload = {
+    first_name: nome,
+    last_name: cognome,
+    email: email
+  };
+
+  console.log("Invio richiesta a:", endpointURL);
+  console.log("Payload inviato:", payload);
+
   try {
-    const response = await fetch("https://its-cinema.vercel.app/api/bookings", {
+    const response = await fetch(endpointURL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({
-        screening_id: screeningId,
-        first_name: nome,
-        last_name: cognome,
-        email: email
-      })
+      body: JSON.stringify(payload)
     });
 
+    console.log("Stato risposta HTTP:", response.status);
+
     if (response.ok) {
+      const data = await response.json();
+      console.log("Risposta API:", data);
+      
       bookingMessage.style.color = "#4CAF50";
       bookingMessage.textContent = "Prenotazione effettuata con successo!";
       setTimeout(function () {
@@ -159,10 +170,14 @@ async function gestisciPrenotazione(e: Event) {
         caricaSpettacoli();
       }, 1500);
     } else {
+      const errorText = await response.text();
+      console.error("Errore API (testo):", errorText);
+      
       bookingMessage.style.color = "#f44336";
-      bookingMessage.textContent = "Errore durante la prenotazione. Riprova.";
+      bookingMessage.textContent = `Errore ${response.status}: verificare i dati inseriti.`;
     }
   } catch (error) {
+    console.error("Errore Fetch:", error);
     bookingMessage.style.color = "#f44336";
     bookingMessage.textContent = "Errore di connessione al server.";
   }
