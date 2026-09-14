@@ -79,7 +79,6 @@ main {
   border-radius: 4px;
 }
 
-/* Dettaglio film */
 .movie-detail-box {
   display: flex;
   gap: 30px;
@@ -122,4 +121,102 @@ main {
   margin-bottom: 10px;
   border-radius: 5px;
   border-left: 3px solid #d4a359;
+}
+
+/* Styling Modale Prenotazione */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: #1e1e1e;
+  border: 1px solid #d4a359;
+  border-radius: 12px;
+  padding: 30px;
+  width: 90%;
+  max-width: 450px;
+  position: relative;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+}
+
+.close-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  color: #ffffff;
+  font-size: 1.8rem;
+  cursor: pointer;
+}
+
+.modal-content h2 {
+  color: #d4a359;
+  margin-top: 0;
+  text-align: center;
+  font-size: 1.4rem;
+}
+
+.modal-subtitle {
+  text-align: center;
+  color: #aaaaaa;
+  font-size: 0.9rem;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  color: #d4a359;
+  font-size: 0.8rem;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #333333;
+  background-color: #121212;
+  color: #ffffff;
+  box-sizing: border-box;
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 12px;
+  background-color: #d4a359;
+  color: #121212;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.submit-btn:hover {
+  background-color: #e5b46a;
+}
+
+.screening-item:hover {
+  border-left-color: #ffffff;
+}
+
+.booking-status {
+  text-align: center;
+  margin-top: 15px;
+  font-weight: bold;
 }
