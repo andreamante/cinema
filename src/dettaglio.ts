@@ -26,6 +26,15 @@ interface Screening {
 const containerDetail = document.getElementById("film-detail-container") as HTMLElement;
 const screeningsContainer = document.getElementById("screenings-container") as HTMLElement;
 
+const bookingModal = document.getElementById("booking-modal") as HTMLElement;
+const closeModalBtn = document.getElementById("close-modal-btn") as HTMLButtonElement;
+const bookingForm = document.getElementById("booking-form") as HTMLFormElement;
+const selectedScreeningInput = document.getElementById("selected-screening-id") as HTMLInputElement;
+const inputNome = document.getElementById("input-nome") as HTMLInputElement;
+const inputCognome = document.getElementById("input-cognome") as HTMLInputElement;
+const inputEmail = document.getElementById("input-email") as HTMLInputElement;
+const bookingMessage = document.getElementById("booking-message") as HTMLElement;
+
 const urlParams = new URLSearchParams(window.location.search);
 const filmId = urlParams.get("id");
 
@@ -86,12 +95,85 @@ async function caricaSpettacoli() {
 
       const nomeSala = item.hall ? item.hall.name : "N/D";
 
-      box.innerHTML = `<p><strong>Orario:</strong> ${orarioFormattato} | <strong>Sala:</strong> ${nomeSala} | <strong>Posti liberi:</strong> ${item.available_seats}</p>`;
+      box.innerHTML = `
+        <p>
+          <strong>Orario:</strong> ${orarioFormattato} | 
+          <strong>Sala:</strong> ${nomeSala} | 
+          <strong>Posti liberi:</strong> ${item.available_seats}
+        </p>
+        <small style="color: #d4a359;">Clicca per prenotare</small>
+      `;
+
+      box.addEventListener("click", function () {
+        apriModalePrenotazione(item.id);
+      });
+
       screeningsContainer.appendChild(box);
     }
   } catch (error) {
     screeningsContainer.innerHTML = "<p>Errore nel caricamento degli orari.</p>";
   }
+}
+
+function apriModalePrenotazione(screeningId: number) {
+  selectedScreeningInput.value = screeningId.toString();
+  bookingMessage.textContent = "";
+  bookingModal.style.display = "flex";
+}
+
+function chiudiModale() {
+  bookingModal.style.display = "none";
+  bookingForm.reset();
+}
+
+async function gestisciPrenotazione(e: Event) {
+  e.preventDefault();
+
+  const screeningId = Number(selectedScreeningInput.value);
+  const nome = inputNome.value;
+  const cognome = inputCognome.value;
+  const email = inputEmail.value;
+
+  bookingMessage.style.color = "#ffffff";
+  bookingMessage.textContent = "Invio prenotazione in corso...";
+
+  try {
+    const response = await fetch("https://its-cinema.vercel.app/api/bookings", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        screening_id: screeningId,
+        first_name: nome,
+        last_name: cognome,
+        email: email
+      })
+    });
+
+    if (response.ok) {
+      bookingMessage.style.color = "#4CAF50";
+      bookingMessage.textContent = "Prenotazione effettuata con successo!";
+      setTimeout(function () {
+        chiudiModale();
+        caricaSpettacoli();
+      }, 1500);
+    } else {
+      bookingMessage.style.color = "#f44336";
+      bookingMessage.textContent = "Errore durante la prenotazione. Riprova.";
+    }
+  } catch (error) {
+    bookingMessage.style.color = "#f44336";
+    bookingMessage.textContent = "Errore di connessione al server.";
+  }
+}
+
+if (closeModalBtn) {
+  closeModalBtn.addEventListener("click", chiudiModale);
+}
+
+if (bookingForm) {
+  bookingForm.addEventListener("submit", gestisciPrenotazione);
 }
 
 caricaDettaglioFilm();
