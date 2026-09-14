@@ -86,7 +86,7 @@ async function caricaSpettacoli() {
 
       const nomeSala = item.hall ? item.hall.name : "N/D";
 
-      box.innerHTML = `<p><strong>Orario:</strong> ${orarioFormattato} | <strong>Sala:</strong> ${nomeSala}</p>`;
+      box.innerHTML = `<p><strong>Orario:</strong> ${orarioFormattato} | <strong>Sala:</strong> ${nomeSala} | <strong>Posti liberi:</strong> ${item.available_seats}</p>`;
       screeningsContainer.appendChild(box);
     }
   } catch (error) {
