@@ -58,4 +58,41 @@ async function caricaDettaglioFilm() {
   }
 }
 
+async function caricaSpettacoli() {
+  if (!filmId) return;
+
+  try {
+    const response = await fetch(`https://its-cinema.vercel.app/api/films/${filmId}/screenings`);
+    const screenings: Screening[] = await response.json();
+
+    screeningsContainer.innerHTML = "";
+
+    if (screenings.length === 0) {
+      screeningsContainer.innerHTML = "<p>Nessun orario disponibile per questo film.</p>";
+      return;
+    }
+
+    for (const item of screenings) {
+      const box = document.createElement("div");
+      box.className = "screening-item";
+
+      const dataOggetto = new Date(item.starts_at);
+      const orarioFormattato = dataOggetto.toLocaleString("it-IT", {
+        day: "2-digit",
+        month: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit"
+      });
+
+      const nomeSala = item.hall ? item.hall.name : "N/D";
+
+      box.innerHTML = `<p><strong>Orario:</strong> ${orarioFormattato} | <strong>Sala:</strong> ${nomeSala}</p>`;
+      screeningsContainer.appendChild(box);
+    }
+  } catch (error) {
+    screeningsContainer.innerHTML = "<p>Errore nel caricamento degli orari.</p>";
+  }
+}
+
 caricaDettaglioFilm();
+caricaSpettacoli();
