@@ -10,9 +10,22 @@ interface FilmDetail {
   rating: string;
 }
 
-const containerDetail = document.getElementById("film-detail-container") as HTMLElement;
+interface Hall {
+  id: number;
+  name: string;
+  capacity: number;
+}
 
-// Recuperiamo l'ID del film dall'URL (es: dettaglio.html?id=2)
+interface Screening {
+  id: number;
+  starts_at: string;
+  hall: Hall;
+  available_seats: number;
+}
+
+const containerDetail = document.getElementById("film-detail-container") as HTMLElement;
+const screeningsContainer = document.getElementById("screenings-container") as HTMLElement;
+
 const urlParams = new URLSearchParams(window.location.search);
 const filmId = urlParams.get("id");
 
@@ -46,39 +59,3 @@ async function caricaDettaglioFilm() {
 }
 
 caricaDettaglioFilm();
-
-interface Screening {
-  id: number;
-  film_id: number;
-  time: string;
-  room: string;
-}
-
-const screeningsContainer = document.getElementById("screenings-container") as HTMLElement;
-
-async function caricaSpettacoli() {
-  if (!filmId) return;
-
-  try {
-    const response = await fetch(`https://its-cinema.vercel.app/api/films/${filmId}/screenings`);
-    const screenings: Screening[] = await response.json();
-
-    screeningsContainer.innerHTML = "";
-
-    if (screenings.length === 0) {
-      screeningsContainer.innerHTML = "<p>Nessun orario disponibile per questo film.</p>";
-      return;
-    }
-
-    for (const item of screenings) {
-      const box = document.createElement("div");
-      box.className = "screening-item";
-      box.innerHTML = `<p><strong>Orario:</strong> ${item.time} | <strong>Sala:</strong> ${item.room}</p>`;
-      screeningsContainer.appendChild(box);
-    }
-  } catch (error) {
-    screeningsContainer.innerHTML = "<p>Errore nel caricamento degli orari.</p>";
-  }
-}
-
-caricaSpettacoli();
