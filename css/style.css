@@ -106,3 +106,20 @@ main {
 .description {
   margin-top: 15px;
 }
+
+.screenings-section {
+  margin-top: 30px;
+}
+
+.screenings-section h3 {
+  color: #d4a359;
+  margin-bottom: 15px;
+}
+
+.screening-item {
+  background-color: #1e1e1e;
+  padding: 10px 15px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  border-left: 3px solid #d4a359;
+}
