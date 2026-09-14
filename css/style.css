@@ -79,3 +79,31 @@ main {
   font-weight: bold;
   border-radius: 4px;
 }
+
+/* Dettaglio film */
+.movie-detail-box {
+  display: flex;
+  gap: 30px;
+  background-color: #1e1e1e;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.detail-poster {
+  width: 250px;
+  border-radius: 6px;
+}
+
+.detail-info h2 {
+  color: #d4a359;
+  margin-bottom: 15px;
+}
+
+.detail-info p {
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+
+.description {
+  margin-top: 15px;
+}
